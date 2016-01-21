@@ -1,10 +1,7 @@
 def convert_to_bgn(price, currency)
-  if (currency == :usd)
-    price = price * 1.7408
-  elsif (currency == :eur)
-    price = price * 1.9557
-  elsif (currency == :gbp)
-    price = price * 2.6415
+  if (currency == :usd) then price *= 1.7408
+  elsif (currency == :eur) then price *= 1.9557
+  elsif (currency == :gbp) then price *= 2.6415
   end
   price.round(2)
 end
