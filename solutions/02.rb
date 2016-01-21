@@ -45,7 +45,7 @@ end
 def new_food(food, snake, dimension)
   new_food = random_in_bounds(dimension[:width], dimension[:height])
   while(food.include?(new_food) || snake.include?(new_food)) do
-   new_food = random_in_bounds(dimension[:width], dimension[:height])
+    new_food = random_in_bounds(dimension[:width], dimension[:height])
   end
   new_food
 end
