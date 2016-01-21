@@ -1,7 +1,11 @@
+require 'pp'
+
 def move(snake, direction)
   new_snake = snake.dup
-  new_snake.shift
+  new_snake.shift unless new_snake.size == 1
   new_snake.push(calculate_new_element(new_snake.last, direction))
+  new_snake.shift if new_snake.size == 2
+  new_snake
 end
 
 def calculate_new_element(old_position, direction)
@@ -14,8 +18,8 @@ def grow(snake, direction)
 end
 
 def snake_head_in_bounds?(snake_head, dimension)
-  in_x_bounds = snake_head.first >= 0 && snake_head.first <= dimension[:width]
-  in_y_bounds = snake_head.last >= 0 && snake_head.last <= dimension[:height]
+  in_x_bounds = snake_head.first >= 0 && snake_head.first < dimension[:width]
+  in_y_bounds = snake_head.last >= 0 && snake_head.last < dimension[:height]
   in_x_bounds && in_y_bounds
 end
 
@@ -24,14 +28,14 @@ def danger?(snake, direction, dimension)
   first_move_in_bounds = snake_head_in_bounds?(new_snake.last, dimension)
   new_snake = move(new_snake, direction)
   second_move_in_bounds = snake_head_in_bounds?(new_snake.last, dimension)
-  !first_move_in_bounds || !second_move_in_bounds
+  ! first_move_in_bounds || ! second_move_in_bounds
 end
 
 def obstacle_ahead?(snake, direction, dimension)
   new_snake = snake.dup
   new_element = calculate_new_element(new_snake.last, direction)
   is_snake_element = new_snake.include?(new_element)
-  !is_snake_element && snake_head_in_bounds?(new_element, dimension)
+  is_snake_element || !snake_head_in_bounds?(new_element, dimension)
 end
 
 def random_in_bounds(width, height)
@@ -45,3 +49,5 @@ def new_food(food, snake, dimension)
   end
   new_food
 end
+
+
