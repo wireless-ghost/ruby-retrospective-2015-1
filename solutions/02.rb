@@ -49,5 +49,3 @@ def new_food(food, snake, dimension)
   end
   new_food
 end
-
-
