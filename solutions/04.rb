@@ -1,3 +1,5 @@
+require 'pp'
+
 class Card
   attr_reader :rank, :suit
 
@@ -15,6 +17,11 @@ class Card
 
   def <=>(other)
     [SUITS.index(other.suit), ALL_RANKS.index(other.rank)] <=>
+    [SUITS.index(@suit), ALL_RANKS.index(@rank)]
+  end
+
+  def ==(other)
+    [SUITS.index(other.suit), ALL_RANKS.index(other.rank)] ==
     [SUITS.index(@suit), ALL_RANKS.index(@rank)]
   end
 
@@ -87,17 +94,25 @@ class Hand
 
   def tierce?()
     cards = @cards.dup
-    check(cards.sort.reverse.map(&:index).to_a, 3)
+    card_indexes = cards.sort.reverse.map(&:index).to_a
+    card_indexes.each_cons(3).any? { |a, b, c| (a + 2) == c && (b + 1) == c }
   end
 
   def quarte?()
     cards = @cards.dup
-    check(cards.sort.reverse.map(&:index).to_a, 4)
+    return false if cards.count < 4
+    card_indexes = cards.sort.reverse.map(&:index).to_a.each_cons(4)
+    card_indexes.any? { |a, b, c, d| a + 3 == d && b + 2 == d && c + 1 == d }
+    #check(cards.sort.reverse.map(&:index).to_a, 4)
   end
 
   def quint?()
     cards = @cards.dup
-    check(cards.sort.reverse.map(&:index).to_a, 5)
+    return false if cards.count < 5
+    card_indexes = cards.sort.reverse.map(&:index).to_a.each_cons(5)
+    card_indexes.any? do |a, b, c, d, e|
+			a + 4 == e && b + 3 == e && c + 2 == e && d + 1 == e
+		end
   end
 
   def four_of_a_kind?(rank)
@@ -121,9 +136,9 @@ class Hand
   end
 
   def twenty?(trump_suit)
-    no = @cards.select{ |card| card != trump_suit }
-        king_card = Card.new(:king, :spades)
-        queen_card = Card.new(:queen, :spades)
+    no = @cards.select{ |card| card.suit != trump_suit }
+    king_card = Card.new(:king, :spades)
+    queen_card = Card.new(:queen, :spades)
     kings = no.select { |card| card.belote_rank == king_card.belote_rank}
     queens = no.select { |card| card.belote_rank == queen_card.belote_rank}
 
@@ -169,11 +184,11 @@ class Deck
   end
 
   def top_card()
-    @cards.last
+    @cards.first
   end
 
   def bottom_card()
-    @cards.first
+    @cards.last
   end
 
   def shuffle()
@@ -220,8 +235,8 @@ end
 
 class BeloteDeck < Deck
 
-  def initialize()
-    super(generate_belote_cards)
+  def initialize(cards = nil)
+    super(cards || generate_belote_cards)
   end
 
   def deal
@@ -231,8 +246,8 @@ end
 
 class SixtySixDeck < Deck
 
-  def initialize()
-    super(generate_sixty_six_cards)
+  def initialize(cards = nil)
+    super(cards || generate_sixty_six_cards)
   end
 
   def deal
