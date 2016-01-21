@@ -10,44 +10,44 @@ class RationalSequence
   end
 
   def add_up_diagonal(x, y, limit)
-   while (x >= 0 && @sequence.length < limit) do
-     if (x >= 0 && y >= 0 && !@sequence.include?(Rational(@matrix[y, x][0], @matrix[y, x][1])))
-                        @sequence << Rational(@matrix.element(y, x).first, @matrix.element(y, x).last)
-     end
-     if y <= 0
+    while (x >= 0 && @sequence.length < limit) do
+      if (x >= 0 && y >= 0 && !@sequence.include?(Rational(@matrix[y, x][0], @matrix[y, x][1])))
+        @sequence << Rational(@matrix.element(y, x).first, @matrix.element(y, x).last)
+      end
+      if y <= 0
         x += 1
-                    break
-           end
-                  y -= 1
-                  x += 1
-          end
+        break
+      end
+      y -= 1
+      x += 1
+    end
     return x, y
   end
 
-        def add_down_diagonal(x, y, limit)
-                while(y >=0 && @sequence.length < limit) do
-                        if (y >= 0 && x >= 0 && !@sequence.include?(Rational(@matrix[y, x][0], @matrix[y, x][1])))
-                                @sequence << Rational(@matrix.element(y, x).first, @matrix.element(y, x).last)
+  def add_down_diagonal(x, y, limit)
+    while(y >= 0 && @sequence.length < limit) do
+      if (y >= 0 && x >= 0 && !@sequence.include?(Rational(@matrix[y, x][0], @matrix[y, x][1])))
+        @sequence << Rational(@matrix.element(y, x).first, @matrix.element(y, x).last)
       end
       if x <= 0
         y += 1
         break
-                        end
-                                y += 1
-                                x -= 1
-                end
-                return x, y
-        end
+      end
+      y += 1
+      x -= 1
+    end
+    return x, y
+  end
 
   def initialize(limit)
     @sequence = Array.new
-                @matrix = Matrix.build(limit, limit) {|x, y| [x+1, y+1]}
-                y = 0
-                x = 0
-                while(@sequence.length < limit) do
-                        x, y = add_down_diagonal(x, y, limit)
+    @matrix = Matrix.build(limit, limit) {|x, y| [x + 1, y + 1]}
+    y = 0
+    x = 0
+    while(@sequence.length < limit) do
+      x, y = add_down_diagonal(x, y, limit)
       x, y = add_up_diagonal(x, y, limit)
-                end
+    end
   end
 end
 
@@ -74,7 +74,7 @@ class PrimeSequence
       if (next_number.prime?)
         @sequence << next_number
       end
-      next_number+= 1
+      next_number += 1
     end
   end
 end
@@ -88,7 +88,7 @@ class FibonacciSequence
     end
   end
 
-  def initialize(limit, first: 0, second: 1)
+  def initialize(limit, first: 1, second: 1)
     @sequence = Array.new(0)
 
     while(@sequence.length < limit)
@@ -125,7 +125,7 @@ module DrunkenMathematician
       if (result.reduce(:+).to_i <= fibonacci)
         break
       end
-   end
-   result
+    end
+    result
   end
 end
