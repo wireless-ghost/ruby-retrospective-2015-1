@@ -117,15 +117,23 @@ module DrunkenMathematician
     rationals.reduce(:+)
   end
 
-  def self.worthless(n)
-    fibonacci = FibonacciSequence.new(n).to_a.last
+  def self.loop_rational(fibonacci)
+    n = 1
     result = []
-    n.downto(1) do |current|
-      result = RationalSequence.new(current).to_a
-      if (result.reduce(:+).to_i <= fibonacci)
+    while(true)
+      temp_result = RationalSequence.new(n).to_a
+      if (temp_result.reduce(:+).to_i <= fibonacci)
+        result = temp_result
+        n += 1
+      else
         break
       end
     end
     result
+  end
+
+  def self.worthless(n)
+    fibonacci = FibonacciSequence.new(n).to_a.last
+    loop_rational(fibonacci)
   end
 end
