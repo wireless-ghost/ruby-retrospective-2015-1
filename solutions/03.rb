@@ -1,6 +1,7 @@
 require 'matrix'
 
 class RationalSequence
+
   include Enumerable
 
   def each
@@ -41,7 +42,7 @@ class RationalSequence
 
   def initialize(limit)
     @sequence = Array.new
-    @matrix = Matrix.build(limit, limit) {|x, y| [x + 1, y + 1]}
+    @matrix = Matrix.build(limit, limit) { |x, y| [x + 1, y + 1] }
     y = 0
     x = 0
     while(@sequence.length < limit) do
@@ -49,16 +50,20 @@ class RationalSequence
       x, y = add_up_diagonal(x, y, limit)
     end
   end
+
 end
 
 class Numeric
+
   def prime?
     return false if self <= 1
     (2...self).all? { |divisor| self % divisor != 0 }
   end
+
 end
 
 class PrimeSequence
+
   include Enumerable
 
   def each
@@ -77,9 +82,11 @@ class PrimeSequence
       next_number += 1
     end
   end
+
 end
 
 class FibonacciSequence
+
   include Enumerable
 
   def each
@@ -98,9 +105,11 @@ class FibonacciSequence
       second = temp
     end
   end
+
 end
 
 module DrunkenMathematician
+
   def self.meaningless(n)
     rationals = RationalSequence.new(n).to_a.partition do |rational|
       (rational.numerator.prime? || rational.denominator.prime?)
@@ -136,4 +145,5 @@ module DrunkenMathematician
     fibonacci = FibonacciSequence.new(n).to_a.last
     loop_rational(fibonacci)
   end
+
 end

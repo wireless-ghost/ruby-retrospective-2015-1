@@ -1,6 +1,7 @@
 require 'pp'
 
 class Card
+
   attr_reader :rank, :suit
 
   ALL_RANKS = [2, 3, 4, 5, 6, 7, 8, 9, 10, :jack, :queen, :king, :ace]
@@ -103,7 +104,6 @@ class Hand
     return false if cards.count < 4
     card_indexes = cards.sort.reverse.map(&:index).to_a.each_cons(4)
     card_indexes.any? { |a, b, c, d| a + 3 == d && b + 2 == d && c + 1 == d }
-    #check(cards.sort.reverse.map(&:index).to_a, 4)
   end
 
   def quint?()
@@ -139,8 +139,8 @@ class Hand
     no = @cards.select{ |card| card.suit != trump_suit }
     king_card = Card.new(:king, :spades)
     queen_card = Card.new(:queen, :spades)
-    kings = no.select { |card| card.belote_rank == king_card.belote_rank}
-    queens = no.select { |card| card.belote_rank == queen_card.belote_rank}
+    kings = no.select { |card| card.belote_rank == king_card.belote_rank }
+    queens = no.select { |card| card.belote_rank == queen_card.belote_rank }
 
     kings.any? { |king| king.same_suit(queens) }
   end
@@ -154,9 +154,11 @@ class Hand
 
     kings.any? { |king| king.same_suit(queens) }
   end
+
 end
 
 class Deck
+
   include Enumerable
 
   alias_method :top_card, :first
@@ -231,6 +233,7 @@ class WarDeck < Deck
   def deal
     super(26)
   end
+
 end
 
 class BeloteDeck < Deck
@@ -242,6 +245,7 @@ class BeloteDeck < Deck
   def deal
     super(8)
   end
+
 end
 
 class SixtySixDeck < Deck
@@ -253,4 +257,5 @@ class SixtySixDeck < Deck
   def deal
     super(6)
   end
+
 end
