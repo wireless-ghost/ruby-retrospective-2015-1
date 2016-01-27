@@ -139,17 +139,15 @@ class Hand
     queen_card = Card.new(:queen, :spades)
     kings = no.select { |card| card.belote_rank == king_card.belote_rank }
     queens = no.select { |card| card.belote_rank == queen_card.belote_rank }
-
     kings.any? { |king| king.same_suit(queens) }
   end
 
   def forty?(trump_suit)
     trump = @cards.select { |card| card.suit == trump_suit }
     king_card = Card.new(:king, :spades)
-        queen_card = Card.new(:queen, :spades)
+    queen_card = Card.new(:queen, :spades)
     kings = trump.select { |card| card.belote_rank == king_card.belote_rank }
     queens = trump.select { |card| card.belote_rank == queen_card.belote_rank }
-
     kings.any? { |king| king.same_suit(queens) }
   end
 end
